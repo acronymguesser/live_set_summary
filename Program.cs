@@ -32,6 +32,14 @@ namespace LiveSetSummary
                 return;
             }
 
+            var yamlFile = new FileInfo(extensionRegex.Replace(alsFile.FullName, ".yaml"));
+            
+            if (yamlFile.Exists)
+            {
+                Console.WriteLine($"Target file '{yamlFile.FullName}' already exists (and I was born too cautious).");
+                return;
+            }
+
             var xmlExtractor = new LiveSetXmlExtractor();
             var xml = xmlExtractor.ExtractXml(alsFile.FullName);
 
@@ -44,8 +52,7 @@ namespace LiveSetSummary
 
             var liveSetYaml = serializer.Serialize(liveSet);
 
-            var yamlFile = extensionRegex.Replace(alsFile.FullName, ".yaml");
-            File.WriteAllText(yamlFile, liveSetYaml);
+            File.WriteAllText(yamlFile.FullName, liveSetYaml);
         }
     }
 }
